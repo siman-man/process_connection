@@ -16,21 +16,21 @@ end
 ProcessConnection.start_master
 
 fork do
-  ProcessConnection.start do |msg|
+  ProcessConnection.start_worker do |msg|
     ProcessConnection.broadcast 'pong', response: false if msg == 'ping'
     "A#{msg}"
   end.join
 end
 
 fork do
-  ProcessConnection.start do |msg|
+  ProcessConnection.start_worker do |msg|
     ProcessConnection.broadcast 'pong', response: false if msg == 'ping'
     "B#{msg}"
   end.join
 end
 
 fork do
-  ProcessConnection.start do |msg|
+  ProcessConnection.start_worker do |msg|
     puts 'pong' if msg == 'pong'
     "C#{msg}"
   end
@@ -55,7 +55,7 @@ sleep 0.2
 
 fork do
   Thread.new { sleep 0.2; exit }
-  ProcessConnection.start do |msg|
+  ProcessConnection.start_worker do |msg|
     ProcessConnection.broadcast 'pong', response: false if msg == 'ping'
     "D#{msg}"
   end.join

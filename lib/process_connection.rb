@@ -14,7 +14,7 @@ module ProcessConnection
     Master.port
   end
 
-  def self.start(master_port = ProcessConnection.master_port, &block)
+  def self.start_worker(master_port = ProcessConnection.master_port, &block)
     Worker.start master_port, &block
   end
 
